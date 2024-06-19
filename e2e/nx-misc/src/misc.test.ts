@@ -7,6 +7,7 @@ import {
   getPublishedVersion,
   isNotWindows,
   newProject,
+  packageInstall,
   readFile,
   readJson,
   removeFile,
@@ -309,8 +310,8 @@ describe('Nx Commands', () => {
 
 // TODO(colum): Change the fetcher to allow incremental migrations over multiple versions, allowing for beforeAll
 describe('migrate', () => {
-  beforeEach(() => {
-    newProject({ packages: [] });
+  beforeAll(() => {
+    newProject({ packages: ['@angular-devkit/core'] });
 
     updateFile(
       `./node_modules/migrate-parent-package/package.json`,
