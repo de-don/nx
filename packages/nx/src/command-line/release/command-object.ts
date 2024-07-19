@@ -10,6 +10,7 @@ import {
   withRunManyOptions,
 } from '../yargs-utils/shared-options';
 import { VersionData } from './utils/shared';
+import { readParallelFromArgsAndEnv } from 'nx/src/utils/command-line-utils';
 
 export interface NxReleaseArgs {
   groups?: string[];
@@ -355,27 +356,12 @@ const planCommand: CommandModule<NxReleaseArgs, PlanOptions> = {
 };
 
 function coerceParallelOption(args: any) {
-  if (args['parallel'] === 'false' || args['parallel'] === false) {
-    return {
-      ...args,
-      parallel: 1,
-    };
-  } else if (
-    args['parallel'] === 'true' ||
-    args['parallel'] === true ||
-    args['parallel'] === ''
-  ) {
-    return {
-      ...args,
-      parallel: Number(args['maxParallel'] || args['max-parallel'] || 3),
-    };
-  } else if (args['parallel'] !== undefined) {
-    return {
-      ...args,
-      parallel: Number(args['parallel']),
-    };
-  }
-  return args;
+  const parallel = readParallelFromArgsAndEnv(args);
+  args['parallel'] = parallel;
+  return {
+    ...args,
+    parallel: readParallelFromArgsAndEnv(args),
+  };
 }
 
 function withGitCommitAndGitTagOptions<T>(
