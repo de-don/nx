@@ -19,6 +19,7 @@ export * from './lib/github-star-widget';
 export * from './lib/youtube.component';
 export * from './lib/x-icon';
 export * from './lib/discord-icon';
+export * from './lib/square-dotted-pattern';
 
 export { resourceMenuItems } from './lib/headers/menu-items';
 export { solutionsMenuItems } from './lib/headers/menu-items';
