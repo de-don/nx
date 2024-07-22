@@ -1,6 +1,6 @@
 import * as esbuild from 'esbuild';
 import * as path from 'path';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import {
   ExecutorContext,
   joinPathFragments,
@@ -167,17 +167,18 @@ function writeTmpEntryWithRequireOverrides(
     tmpPath,
     `main-with-require-overrides.js`
   );
+  const mainFile = `./${path.join(
+    mainPathRelativeToDist,
+    `${mainFileName}${outExtension}`
+  )}`;
+
+  const hasModuleExports = readFileSync(path.normalize(options.main))
+    .toString()
+    .includes('module.exports');
+
   writeFileSync(
     mainWithRequireOverridesInPath,
-    getRegisterFileContent(
-      project,
-      paths,
-      `./${path.join(
-        mainPathRelativeToDist,
-        `${mainFileName}${outExtension}`
-      )}`,
-      outExtension
-    )
+    getRegisterFileContent(project, paths, mainFile, outExtension)
   );
 
   let mainWithRequireOverridesOutPath: string;
@@ -203,7 +204,8 @@ export function getRegisterFileContent(
   project: ProjectGraphProjectNode,
   paths: Record<string, string[]>,
   mainFile: string,
-  outExtension = '.js'
+  outExtension = '.js',
+  hasModuleExports = false
 ) {
   mainFile = normalizePath(mainFile);
 
@@ -286,7 +288,7 @@ function isFile(s) {
 }
 
 // Call the user-defined main.
-require('${mainFile}');
+${hasModuleExports ? 'module.exports = ' : ''} require('${mainFile}');
 `;
 }
 
