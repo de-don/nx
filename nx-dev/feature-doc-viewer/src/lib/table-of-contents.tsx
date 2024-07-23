@@ -7,6 +7,7 @@ interface Heading {
   id: string;
   level: number;
   title: string;
+  tableOfContentsColor?: string;
 }
 
 export function collectHeadings(
@@ -28,8 +29,7 @@ export function collectHeadings(
 
       if (typeof title === 'string') {
         sections.push({
-          id: node.attributes['id'],
-          level: node.attributes['level'],
+          ...node.attributes,
           title,
         });
       }
@@ -73,6 +73,7 @@ export function TableOfContents({
     headings.find((i) => i.level === 1)?.title || null
   );
 
+  console.log({ items });
   return (
     <>
       <nav className="toc">
@@ -90,6 +91,14 @@ export function TableOfContents({
                       {
                         'border-slate-500 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/60':
                           activeId === item.id,
+                        // region Nx Cloud
+                        'border-green-200 bg-green-50 hover:border-green-500 dark:border-green-200 dark:bg-green-800/40':
+                          item.tableOfContentsColor === 'green' &&
+                          activeId !== item.id,
+                        'border-green-500 bg-green-50 dark:border-green-700 dark:bg-green-800/60':
+                          item.tableOfContentsColor === 'green' &&
+                          activeId === item.id,
+                        // endregion Nx C`oud
                         'pl-6': item.level === 3,
                       }
                     )}

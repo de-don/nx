@@ -27,6 +27,8 @@ import { StackblitzButton } from './lib/tags/stackblitz-button.component';
 import { stackblitzButton } from './lib/tags/stackblitz-button.schema';
 import { Graph } from './lib/tags/graph.component';
 import { graph } from './lib/tags/graph.schema';
+import { TutorialSection } from './lib/tags/nx-cloud-section.component';
+import { nxCloudSection } from './lib/tags/nx-cloud-section.schema';
 import { Iframe } from './lib/tags/iframe.component';
 import { iframe } from './lib/tags/iframe.schema';
 import { InstallNxConsole } from './lib/tags/install-nx-console.component';
@@ -83,6 +85,7 @@ export const getMarkdocCustomConfig = (
       graph,
       iframe,
       'install-nx-console': installNxConsole,
+      'nx-cloud-section': nxCloudSection,
       persona,
       personas,
       'project-details': projectDetails,
@@ -114,6 +117,7 @@ export const getMarkdocCustomConfig = (
     Heading,
     Iframe,
     InstallNxConsole,
+    NxCloudSection: TutorialSection,
     Persona,
     Personas,
     ProjectDetails,
